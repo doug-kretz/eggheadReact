@@ -3,50 +3,49 @@ import ReactDOM from 'react-dom';
 class App extends React.Component {
 	constructor(){
 		super();
-		this.state = { 
-			red: 0,
-			green: 0,
-			blue: 0
-		}
-		this.update = this.update.bind(this)
+		this.state = { val: 0 };
+		this.update = this.update.bind(this);
 	}
-	update(e){
-		this.setState({
-			red: this.refs.red.refs.inp.value, 
-			green: this.refs.green.refs.inp.value, 
-			blue: this.refs.blue.refs.inp.value 
-		})
+
+	update(){
+		this.setState({val: this.state.val +1 })
+	}
+	componentWillMount(){
+		console.log("mounting")
 	}
 	render(){
-		return (
-			<div>
-				<Slider ref="red" update={this.update} />	
-				{this.state.red}
-				<br />
-				<Slider ref="green" update={this.update} />	
-				{this.state.green}
-				<br />
-				<Slider ref="blue" update={this.update} />	
-				{this.state.blue}
-				<br />
-			</div>
-		);
+		console.log('rendering!')
+		return <button onClick={this.update}>{this.state.val}</button>
+	}
+	componentDidMount(){
+	console.log('mounted')
 	}
 
+	componentWillUnmount(){
+		console.log("bye!")
+	}
 }
+class Wrapper extends React.Component {
+	constructor(){
+		super();
+	}
+	mount(){
+	ReactDOM.render(<App />, document.getElementById('a'))
+	}
+	unmount(){
+		ReactDOM.unmountComponentAtNode(document.getElementById("a"))
+	}
 
-class Slider extends React.Component {
+	
 	render(){
 		return (
 		<div>
-			<input ref="inp" type="range"
-				min="0"
-				max="255"
-				onChange={this.props.update}
-			/>
+			<button onClick={this.mount.bind(this)}>Mount</button>
+			<button onClick={this.unmount.bind(this)}>Unmount</button>
+			<div id="a"></div>
 		</div>
-		);
+	)
 	}
 }
 
-export default App
+export default Wrapper
